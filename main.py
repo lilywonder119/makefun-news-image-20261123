@@ -15,6 +15,7 @@ def run():
     source = os.path.join(here, "entry.png")
     dest = os.path.join(target_dir, "entry.png")
     shutil.copyfile(source, dest)
+    # Revision pass: the copy is the whole job — no transforms, ever.
     return 0
 
 
