@@ -1,67 +1,74 @@
 #!/usr/bin/env python3
-"""THE WORLD DISPATCH — entry program for news-image-20261123 (Final 7).
+"""THE WORLD DISPATCH front page, delivered untouched.
 
-The newspaper front page drawn by compose.py is stored beside this file
-as entry.png. This program's only job is to deliver that page, byte for
-byte, into the output directory the harness points at MAKEFUN_OUTPUT_DIR
-(or /output when the variable is absent).
+compose.py rendered the Monday edition of THE WORLD DISPATCH and saved
+the finished page next to this script as entry.png. My task here is
+narrow on purpose: carry those exact bytes to wherever the harness
+asks for them, and complain loudly if the page on disk is not the page
+that was verified before commit.
 
-It is deliberately boring: standard library only (hashlib, os, sys), no
-image processing at all, and it refuses to ship anything whose size or
-digest differs from the page that was checked in with it. Two runs always
-produce identical output because the input file never changes.
+Nothing in here draws, resizes or re-encodes. The only tools are the
+Python standard library (hashlib for the fingerprint, os for paths,
+sys for the exit channel), so the output of the first run and the
+output of the fiftieth run are the same file, bit for bit. The page
+covers the World Chess Championship crowds of Monday 23 November
+2026, and it travels exactly as it was composed.
 """
 
 import hashlib
 import os
 import sys
 
+# Fingerprint of the checked-in page. Both numbers were taken from the
+# verified entry.png at commit time; if either drifts, delivery stops.
 EXPECTED_BYTES = 317402
 EXPECTED_SHA256 = "669c11c95d6cd4c5a574577d8e065a43deb28c07cc65c2bee8208b78ef1507a4"
-HARD_LIMIT = 1048576  # the competition's 1 MiB ceiling
-PNG_HEADER = b"\x89PNG\r\n\x1a\n"
+
+# The eight magic bytes every PNG starts with, and the square canvas
+# the competition fixes for this edition.
+PNG_SIGNATURE = b"\x89PNG\r\n\x1a\n"
+CANVAS = (1024, 1024)
 
 
-def read_page():
-    here = os.path.dirname(os.path.abspath(__file__))
-    with open(os.path.join(here, "entry.png"), "rb") as fh:
-        return fh.read()
+def load_page():
+    """Read entry.png from the folder this script lives in."""
+    folder = os.path.dirname(os.path.abspath(__file__))
+    with open(os.path.join(folder, "entry.png"), "rb") as handle:
+        return handle.read()
 
 
-def check_dimensions(page):
-    """Second, independent guard: the IHDR chunk of a PNG carries the
-    canvas size at bytes 16..24, and this entry must be exactly the
-    1024 x 1024 square the competition demands. Reading it by hand keeps
-    the program free of any imaging library."""
+def verify(page):
+    """Refuse to ship a page that fails any of the pinned checks."""
+    if not page.startswith(PNG_SIGNATURE):
+        sys.exit("entry.png: missing PNG signature")
     if len(page) < 24:
-        sys.exit("entry.png is too short to hold an IHDR chunk")
-    width = int.from_bytes(page[16:20], "big")
-    height = int.from_bytes(page[20:24], "big")
-    if (width, height) != (1024, 1024):
-        sys.exit("entry.png canvas is %dx%d, expected 1024x1024" % (width, height))
+        sys.exit("entry.png: truncated before the IHDR fields")
+    size = (int.from_bytes(page[16:20], "big"),
+            int.from_bytes(page[20:24], "big"))
+    if size != CANVAS:
+        sys.exit("entry.png: canvas is %dx%d, want %dx%d"
+                 % (size[0], size[1], CANVAS[0], CANVAS[1]))
+    if len(page) != EXPECTED_BYTES:
+        sys.exit("entry.png: %d bytes, want %d" % (len(page), EXPECTED_BYTES))
+    digest = hashlib.sha256(page).hexdigest()
+    if digest != EXPECTED_SHA256:
+        sys.exit("entry.png: sha256 mismatch (%s)" % digest)
+    return digest
 
 
 def main():
-    page = read_page()
+    page = load_page()
+    digest = verify(page)
 
-    if not page.startswith(PNG_HEADER):
-        sys.exit("entry.png is not a PNG file")
-    check_dimensions(page)
-    if len(page) > HARD_LIMIT:
-        sys.exit("entry.png exceeds the 1 MiB limit: %d bytes" % len(page))
-    if len(page) != EXPECTED_BYTES:
-        sys.exit("entry.png size drifted: %d != %d" % (len(page), EXPECTED_BYTES))
-    digest = hashlib.sha256(page).hexdigest()
-    if digest != EXPECTED_SHA256:
-        sys.exit("entry.png sha256 drifted: %s" % digest)
+    destination = os.environ.get("MAKEFUN_OUTPUT_DIR") or "/output"
+    os.makedirs(destination, exist_ok=True)
+    target = os.path.join(destination, "entry.png")
+    with open(target, "wb") as handle:
+        handle.write(page)
 
-    out_dir = os.environ.get("MAKEFUN_OUTPUT_DIR") or "/output"
-    os.makedirs(out_dir, exist_ok=True)
-    target = os.path.join(out_dir, "entry.png")
-    with open(target, "wb") as fh:
-        fh.write(page)
-
-    sys.stderr.write("delivered %s (%d bytes, sha256 %s)\n" % (target, len(page), digest))
+    sys.stderr.write("THE WORLD DISPATCH delivered: %s "
+                     "(%d bytes, sha256 %s)\n"
+                     % (target, len(page), digest))
 
 
 if __name__ == "__main__":
