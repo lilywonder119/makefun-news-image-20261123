@@ -1,42 +1,54 @@
-# DUEL VARIAN — NI23 G3 · Final 7 · THE WORLD DISPATCH
+# DUEL — NI23 G4 Final 7 (@lilywonder1) · THE FULL RECORD
 
-Trio lead: lead akun #29 Kejuaraan Catur Dunia (kartu #1, paling besar) +
-#1 Tankers Burn in Hormuz Strait + #43 Democrats Take House 258–173.
+## Duel A vs B (both rendered 1024x1024, judged shrunk to 300x300)
+- Variant A: full-width Lisbon lead, then 12 cards in a 3-wide grid,
+  title 24px, facts 14px. File 223,370 bytes.
+- Variant B: compact masthead, 12 cards in a 2-wide grid. File 208,857 bytes.
+  At full size its DAY IN NUMBERS rows overlap and its footer is clipped
+  at the bottom edge; at 300px its bottom third turns to mush.
+- WINNER: A. At 300x300 every A headline stays legible, the grid reads as
+  one clear newspaper page, and nothing is clipped: all 13 card facts fit
+  inside their cards, ALSO ON THE DAY (27 items) and all three HOW SURE
+  WE ARE lines are fully on the page. B is smaller but less readable,
+  and readability is the deciding axis, so the tie-break on size never
+  comes into play.
 
-## Tiga varian yang dibangun (satu compose.py, argumen palet A/B/C)
-- **A — Pine & Cherry on White:** latar putih, masthead Playfair Black hijau
-  pinus, aksen merah ceri tua, kartu putih gading.
-- **B — Cream Dispatch:** latar krem hangat, tinta sama, kartu krem terang.
-- **C — Cherry Masthead:** latar putih, masthead merah ceri, aksen hijau pinus.
+## Gerbang Tembak Pengganti — winner A vs standing entry G3
+Standing: G3 "THE WORLD DISPATCH", build 317,402 bytes, sha 669c11c9...,
+13 cards, cream palette (data supplied by coordinator; repo not opened).
 
-## Penilaian
-- Kontras 300px: A paling tajam (masthead pinus di atas putih terbaca penuh,
-  tanggal tidak bertabrakan). B sedikit lebih lembut — krem menurunkan kontras
-  judul kartu di ukuran kecil. C kuat, tetapi masthead ceri berebut perhatian
-  dengan pin peta merah dan kotak DATE CHECK merah.
-- Keterbacaan 300px: di A, masthead, tanggal, dan judul 13 kartu utama semua
-  terbaca; ALSO ON 29 baris utuh satu baris per cerita; DATE CHECK terbaca.
-- Kepadatan data: sama di ketiga varian (42 cerita, strip 6 angka, timeline
-  6 slot, peta 13 pin) — penentu duel murni palet/kontras.
+Measured axes:
+- File size: A 223,370 B vs G3 317,402 B — A is 94,032 B (29.6%) smaller;
+  exact ties in judging go to the smaller file.
+- Breadth, counted on the page: A carries 40 stories (13 cards + 27
+  numbered ALSO ON) across 8 regions, and its colour region strip sums
+  to exactly 40 (Europe 8, Middle East 4, N. America 6, S. Asia 13,
+  Global 3, SE Asia 3, Africa 2, Asia-Pacific 1).
+- Consensus trio of 23 Nov all present as cards: #2 Hormuz tankers,
+  #3 IRGC Patriot claim, #4+#5 Kyiv (boy pulled alive; 14 missing).
+  Account lead #1 is pool #15, the Lisbon cost-of-living march.
+- Faithfulness audit (zero-bound standard): the IRGC story is framed as
+  a claim in its headline and carries a CLAIM chip; the Kyiv missing
+  story is attributed in its headline ("..., Zelenskiy Says"); the
+  Finland ship "still burns", never "sunk". No claim is printed as fact.
+- DATE CHECK names 7 dated discards (19/18/21/22 Nov) and contradicts no
+  card: the Indonesia factory fire itself is listed as a 22 Nov discard,
+  and only its 23 Nov update numbers (7 found, 50 missing) are used.
+- Honest furniture: kicker "52 reports cross-checked"; prices/weather
+  strip prints NO DAY-POOL WIRE instead of invented figures; timeline
+  times only the two slots the pool times (00:02Z, 02:00Z), other slots
+  labelled by part of day; THE DAY IN NUMBERS holds 8 pool figures;
+  map pins carry card numbers with a legend; no text anywhere implies
+  a day other than Monday 23 November 2026; no garbled text found on
+  visual inspection at full size and at 300x300.
 
-## Pemenang: A
-Dirender final sebagai entry.png (317.402 byte, sha256
-669c11c95d6cd4c5a574577d8e065a43deb28c07cc65c2bee8208b78ef1507a4,
-IHDR 1024×1024 terverifikasi manual via struct).
+VERDICT vs G3: LEBIH KUAT (stronger on size, counted breadth, claim
+framing, date-check consistency and completeness of furniture).
 
-## Uji 300px
-entry.png dikecilkan ke lebar 300px (/tmp/ni23g3-final7-300.png) dan diperiksa
-visual: masthead THE WORLD DISPATCH terbaca, tanggal Monday 23 November 2026
-terbaca, judul ke-13 kartu utama terbaca, strip angka terbaca. LULUS.
-Dua putaran perbaikan mendahului hasil ini: putaran pertama gagal (tanggal
-menimpa masthead, tiga judul kartu meluber 3 baris, deck terpotong) — font dan
-judul/deck dipendekkan serta geometri disusun ulang, lalu diuji ulang.
-
-## Kenapa lebih kuat dari entry G2 akun ini (Air Terjun Bertingkat)
-G2 memakai konsep dekoratif bertingkat yang memecah berita ke banyak panel
-kecil. G3 ini halaman depan koran lurus: masthead raksasa 68px, lead catur
-sebagai kartu terbesar dengan papan catur gambar sendiri, 12 kartu besar lain
-berilustrasi + tag sumber 100%, peta dunia titik-titik dengan 13 pin bernomor
-yang persis nomor kartu, strip 6 angka yang semuanya mengikat kartu, timeline
-UTC 6 slot, ALSO ON bernomor sampai 42 cerita, dan kotak DATE CHECK merah
-dengan 8 buangan bernama + bertanggal. Margin checker: 13/13 LOLOS.
+## Entry
+- entry.png: 223,370 bytes, 1024x1024
+- sha256: fc602b792b63a54222e67e45f3bf586a3435de9a71142d979d168378608a1413
+- Anchor commit: cc51d8953d5686518c06336ea2b8d9bfff6b1d59
+- Staging commit: recorded in the git log of this staging repo
+  (message "NI23 G4 final7: THE FULL RECORD"); hash reported to the
+  coordinator in the build report.
